@@ -5,7 +5,7 @@ IsotopicDistribution <- function(formula = list(), charge = 1) {
   # Error if charge = 0
   if(charge == 0) stop("a charge of zero is not allowed")
 
-  inputFormula <- list(C = 0, H = 0, N = 0, O = 0, S = 0, P = 0, Br = 0, Cl = 0, F = 0, Si = 0)
+  inputFormula <- list(C = 0, H = 0, N = 0, O = 0, S = 0, P = 0, Br = 0, Cl = 0, F = 0, Si = 0, Na = 0, K = 0)
   inputFormula[names(formula)] <- formula  # replace default values with argument values
   
   simulation <- function(inputFormula) {
@@ -55,6 +55,15 @@ IsotopicDistribution <- function(formula = list(), charge = 1) {
       size = inputFormula$Si,
       replace = TRUE,
       prob = c(0.922297, 0.046832, 0.030872)))
+    
+    # Masses taken from http://www.ciaaw.org/pubs/TSAW2013_xls.xls
+    massSodium <- inputFormula$Na * 22.98976928
+    
+    # Taken from https://en.wikipedia.org/wiki/Isotopes_of_potassium
+    massPotassium <- sum(sample(c(38.96370668, 40.96182576),
+                                size = inputFormula$K,
+                                replace = TRUE,
+                                prob = c(0.932581, 0.067302)))
     
     massMolecule <- sum(massCarbon, massHydrogen, massNitrogen, massOxygen,
                         massSulfer, massPhosphorus, massBromine, massChlorine,
